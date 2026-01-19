@@ -1,0 +1,31 @@
+name: WPS-Checkin
+
+on:
+  workflow_dispatch: # 支持手动运行测试
+  schedule:
+    - cron: '30 0 * * *' # 北京时间每天早上 08:30 运行
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+          
+      - name: Run WPS Checkin
+        env:
+          # 注意：请确保你在 Settings -> Secrets 里的名字叫 WPS_SID
+          WPS_SID: ${{ secrets.WPS_SID }} 
+        run: |
+          cd script/wps/
+          python main.py
