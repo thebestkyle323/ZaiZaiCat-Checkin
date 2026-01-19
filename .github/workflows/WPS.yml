@@ -20,7 +20,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          # 必须安装 pycryptodome 才能解决 Crypto 缺失问题
+          pip install requests pycryptodome
           
       - name: Run WPS Checkin
         env:
